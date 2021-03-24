@@ -1,0 +1,19 @@
+{
+    "products": [
+      {
+        "name" : "skateboard",
+        "price" : 80,
+        "weight" : 2
+      },
+      {
+        "name" : "bike",
+        "price" : 150,
+        "weight" : 9
+      },
+      {
+        "name" : "roller",
+        "price" : 100,
+        "weight" : 3
+      }
+    ]
+  }
