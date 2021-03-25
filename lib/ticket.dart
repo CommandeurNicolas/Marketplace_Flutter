@@ -131,10 +131,10 @@ class _TicketState extends State<Ticket> {
               opacity: oldOpacity,
               child: oldChild,
             ),
-            Opacity(
-              opacity: newOpacity,
-              child: newChild,
-            ),
+            // Opacity(
+            //   opacity: newOpacity,
+            //   child: newChild,
+            // ),
           ],
         ),
       ),

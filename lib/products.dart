@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:market_place_test/constants.dart';
 import 'package:market_place_test/http_service.dart';
+import 'package:market_place_test/product_details.dart';
 import 'package:market_place_test/product_model.dart';
 import 'package:market_place_test/ticket.dart';
 
@@ -23,8 +24,18 @@ class ProductsPage extends StatelessWidget {
 
             return ListView(
               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-              children:
-                  products.map((Product p) => _buildProductTile(p)).toList(),
+              children: products
+                  .map((Product p) => _buildProductTile(context, p))
+                  .toList(),
+              // children: products
+              //     .map((Product p) => ListTile(
+              //           title: Text(p.name),
+              //           onTap: () => Navigator.of(context).push(
+              //               MaterialPageRoute(
+              //                   builder: (context) =>
+              //                       ProductDetails(product: p))),
+              //         ))
+              //     .toList(),
             );
           } else {
             return Center(child: CircularProgressIndicator());
@@ -34,11 +45,11 @@ class ProductsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildProductTile(Product p) {
+  Widget _buildProductTile(BuildContext context, Product p) {
     return Ticket(
       width: 350,
       top: _buildTopTicket(p),
-      bottom: _buildBottomTicket(),
+      bottom: _buildBottomTicket(context, p),
       borderRadius: 10.0,
       punchRadius: 10.0,
     );
@@ -95,28 +106,36 @@ class ProductsPage extends StatelessWidget {
     );
   }
 
-  Container _buildBottomTicket() {
+  Container _buildBottomTicket(BuildContext context, Product p) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
-      height: 50,
+      height: 50.0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProductDetails(product: p),
+                ),
+              );
+            },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
               side: MaterialStateProperty.all(
-                BorderSide.lerp(
-                    BorderSide(
-                      style: BorderStyle.solid,
-                      color: secondary,
-                    ),
-                    BorderSide(
-                      style: BorderStyle.solid,
-                      color: secondary,
-                    ),
-                    10.0),
+                BorderSide(style: BorderStyle.solid, color: secondary),
+                // BorderSide.lerp(
+                //     BorderSide(
+                //       style: BorderStyle.solid,
+                //       color: secondary,
+                //     ),
+                //     BorderSide(
+                //       style: BorderStyle.solid,
+                //       color: secondary,
+                //     ),
+                //     10.0),
               ),
             ),
             child: Text(
