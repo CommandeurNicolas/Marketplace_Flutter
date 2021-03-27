@@ -2,6 +2,7 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:market_place_test/cart.dart';
 import 'package:market_place_test/constants.dart';
+import 'package:market_place_test/custom_appbar.dart';
 import 'package:market_place_test/http_service.dart';
 import 'package:market_place_test/product_details.dart';
 import 'package:market_place_test/product_model.dart';
@@ -22,9 +23,8 @@ class _ProductPageState extends State<ProductsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("PowerSlide"),
-        centerTitle: true,
+      appBar: CustomAppbar(
+        title: "powerslide",
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
@@ -50,6 +50,13 @@ class _ProductPageState extends State<ProductsPage> {
           ),
         ],
       ),
+      // appBar: AppBar(
+      //   title: Text("PowerSlide"),
+      //   centerTitle: true,
+      //   actions: [
+
+      //   ],
+      // ),
       body: FutureBuilder(
         future: httpService.getProducts(),
         builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {

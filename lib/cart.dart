@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:market_place_test/product_model.dart';
 
 import 'constants.dart';
+import 'custom_appbar.dart';
 
 class CartPage extends StatefulWidget {
   CartPage({Key key, this.products}) : super(key: key);
@@ -21,9 +22,8 @@ class _CartPageState extends State<CartPage> {
       print(_total);
     }
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Your Cart"),
-        centerTitle: true,
+      appBar: CustomAppbar(
+        title: "Your Cart",
       ),
       body: Column(
         children: [
@@ -96,13 +96,13 @@ class _CartPageState extends State<CartPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("data"),
+                      Text("Total"),
                       Text(
                         _total.toString(),
                       ),
                     ],
                   ),
-                  RaisedButton(
+                  ElevatedButton(
                     onPressed: () {},
                     child: Text("Go to checkout"),
                   )
