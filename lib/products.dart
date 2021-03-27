@@ -1,12 +1,23 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:market_place_test/cart.dart';
 import 'package:market_place_test/constants.dart';
 import 'package:market_place_test/http_service.dart';
 import 'package:market_place_test/product_details.dart';
 import 'package:market_place_test/product_model.dart';
 import 'package:market_place_test/ticket.dart';
 
-class ProductsPage extends StatelessWidget {
+class ProductsPage extends StatefulWidget {
+  ProductsPage({Key key}) : super(key: key);
+
+  @override
+  _ProductPageState createState() => _ProductPageState();
+}
+
+class _ProductPageState extends State<ProductsPage> {
   final HttpService httpService = new HttpService();
+
+  List<Product> _cart = [];
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +25,30 @@ class ProductsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("PowerSlide"),
         centerTitle: true,
-        backgroundColor: primary,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
+            child: Badge(
+              position: BadgePosition(top: 0.0, end: 0.0),
+              badgeColor: secondary,
+              badgeContent: Text(
+                _cart.length.toString(),
+                style: TextStyle(color: Colors.white),
+              ),
+              child: IconButton(
+                icon: Icon(Icons.shopping_cart_rounded),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CartPage(products: _cart),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
       ),
       body: FutureBuilder(
         future: httpService.getProducts(),
@@ -113,6 +147,38 @@ class ProductsPage extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          _cart.contains(p)
+              ? Container(
+                  // onPressed: () {
+                  //   setState(() {
+                  //     _cart_product.add(p);
+                  //   });
+                  // },
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    border: Border.all(
+                      style: BorderStyle.solid,
+                      color: Colors.green,
+                    ),
+                    borderRadius: BorderRadius.circular(4.0),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.check_rounded,
+                          color: Colors.white,
+                        ),
+                        Icon(
+                          Icons.shopping_cart_outlined,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              : Container(),
           ElevatedButton(
             onPressed: () {
               Navigator.push(
@@ -126,16 +192,6 @@ class ProductsPage extends StatelessWidget {
               backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
               side: MaterialStateProperty.all(
                 BorderSide(style: BorderStyle.solid, color: secondary),
-                // BorderSide.lerp(
-                //     BorderSide(
-                //       style: BorderStyle.solid,
-                //       color: secondary,
-                //     ),
-                //     BorderSide(
-                //       style: BorderStyle.solid,
-                //       color: secondary,
-                //     ),
-                //     10.0),
               ),
             ),
             child: Text(
@@ -143,19 +199,6 @@ class ProductsPage extends StatelessWidget {
               style: TextStyle(color: Colors.black),
             ),
           ),
-          ElevatedButton(
-            onPressed: () {},
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
-              side: MaterialStateProperty.all(
-                BorderSide(
-                  style: BorderStyle.solid,
-                  color: Colors.green,
-                ),
-              ),
-            ),
-            child: Icon(Icons.shopping_cart_outlined),
-          )
         ],
       ),
     );
