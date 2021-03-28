@@ -25,20 +25,20 @@ class _CustomAppbarState extends State<CustomAppbar> {
           : IconButton(
               icon: Icon(
                 Icons.arrow_back_ios_rounded,
-                color: Colors.white,
+                color: Colors.black,
               ),
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
       title: Text(
-        widget.title.toUpperCase(),
-        style: TextStyle(color: Colors.white),
+        widget.title[0].toUpperCase() + widget.title.substring(1),
+        style: TextStyle(color: Colors.black),
       ),
       centerTitle: true,
-      backgroundColor: primary,
+      backgroundColor: Colors.white,
       elevation: 0.0,
-      actionsIconTheme: IconThemeData(color: Colors.white),
+      actionsIconTheme: IconThemeData(color: Colors.black),
       actions: widget.actions == null ? [] : widget.actions,
     );
   }

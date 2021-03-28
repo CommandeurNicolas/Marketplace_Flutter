@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:market_place_test/cart.dart';
@@ -19,10 +21,19 @@ class _ProductPageState extends State<ProductsPage> {
   final HttpService httpService = new HttpService();
 
   List<Product> _cart = [];
+  HashMap<Product, bool> _isInCart = new HashMap<Product, bool>();
+  Future<List<Product>> _productList;
+
+  @override
+  void initState() {
+    _productList = httpService.getProducts();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: CustomAppbar(
         title: "powerslide",
         actions: [
@@ -58,7 +69,7 @@ class _ProductPageState extends State<ProductsPage> {
       //   ],
       // ),
       body: FutureBuilder(
-        future: httpService.getProducts(),
+        future: _productList,
         builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
           if (snapshot.hasData) {
             List<Product> products = snapshot.data;
@@ -154,7 +165,7 @@ class _ProductPageState extends State<ProductsPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _cart.contains(p)
+          _isInCart.containsKey(p) && _isInCart[p]
               ? Container(
                   // onPressed: () {
                   //   setState(() {
@@ -187,13 +198,18 @@ class _ProductPageState extends State<ProductsPage> {
                 )
               : Container(),
           ElevatedButton(
-            onPressed: () {
-              Navigator.push(
+            onPressed: () async {
+              final result = await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => ProductDetails(product: p),
                 ),
               );
+              setState(() {
+                _cart.addAll(result);
+                _isInCart[p] = true;
+              });
+              print(_cart.contains(p));
             },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(Colors.white),

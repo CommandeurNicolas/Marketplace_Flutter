@@ -19,7 +19,6 @@ class _CartPageState extends State<CartPage> {
   Widget build(BuildContext context) {
     for (Product item in widget.products) {
       _total += double.parse(item.price);
-      print(_total);
     }
     return Scaffold(
       appBar: CustomAppbar(
