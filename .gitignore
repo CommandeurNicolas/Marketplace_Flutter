@@ -8,6 +8,8 @@
 .buildlog/
 .history
 .svn/
+assets/coolors.png
+assets/coolors2.png
 
 # IntelliJ related
 *.iml
