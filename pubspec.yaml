@@ -30,6 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^0.13.1
   badges: ^1.2.0
+  material_dialogs: ^1.0.0
 
 dev_dependencies:
   flutter_test:
