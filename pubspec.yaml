@@ -32,6 +32,7 @@ dependencies:
   xml: ^5.0.2
   badges: ^1.2.0
   material_dialogs: ^1.0.0
+  lottie: ^1.0.1
 
 dev_dependencies:
   flutter_test:

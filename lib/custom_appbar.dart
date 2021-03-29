@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:market_place_test/constants.dart';
 
 class CustomAppbar extends StatefulWidget implements PreferredSizeWidget {
-  CustomAppbar({Key key, this.title, this.actions})
+  CustomAppbar({Key key, this.title, this.actions, this.popReturn})
       : preferredSize = Size.fromHeight(kToolbarHeight),
         super(key: key);
 
+  final dynamic popReturn;
   final String title;
   final List<Widget> actions;
 
@@ -28,7 +28,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
                 color: Colors.black,
               ),
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pop(context, widget.popReturn);
               },
             ),
       title: Text(

@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:market_place_test/cart.dart';
 import 'package:market_place_test/constants.dart';
 import 'package:market_place_test/custom_appbar.dart';
@@ -26,6 +27,7 @@ class _ProductPageState extends State<ProductsPage> {
 
   @override
   void initState() {
+    // SystemChrome.setEnabledSystemUIOverlays([]);
     _productList = httpService.getProducts();
     super.initState();
   }
@@ -48,13 +50,25 @@ class _ProductPageState extends State<ProductsPage> {
               ),
               child: IconButton(
                 icon: Icon(Icons.shopping_cart_rounded),
-                onPressed: () {
-                  Navigator.push(
+                onPressed: () async {
+                  final result = await Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => CartPage(products: _cart),
                     ),
                   );
+                  HashMap<Product, bool> isInCart =
+                      new HashMap<Product, bool>();
+                  for (Product item in _isInCart.keys) {
+                    if (result != null && result.contains(item))
+                      isInCart[item] = true;
+                    else
+                      isInCart[item] = false;
+                  }
+                  setState(() {
+                    result == null ? _cart.clear() : _cart = result;
+                    _isInCart = isInCart;
+                  });
                 },
               ),
             ),
@@ -209,7 +223,6 @@ class _ProductPageState extends State<ProductsPage> {
                 _cart.addAll(result);
                 _isInCart[p] = true;
               });
-              print(_cart.contains(p));
             },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
