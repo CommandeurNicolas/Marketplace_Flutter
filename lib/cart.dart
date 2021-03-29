@@ -9,6 +9,7 @@ import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 
 import 'constants.dart';
 import 'custom_appbar.dart';
+import 'http_service.dart';
 
 class CartPage extends StatefulWidget {
   CartPage({Key key, this.products}) : super(key: key);
@@ -20,6 +21,8 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
+  final HttpService httpService = new HttpService();
+
   double _total = 0.0;
   HashMap<Product, int> _productNumber = new HashMap<Product, int>();
 
@@ -231,11 +234,12 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
-  Widget _buildTotalText() {}
-
   Widget _buildCheckoutButton() {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () async {
+        double shippingPrice = await httpService.getShipping(100, 10);
+        print(shippingPrice);
+      },
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all<Color>(primary),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
