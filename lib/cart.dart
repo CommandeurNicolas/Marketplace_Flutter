@@ -25,6 +25,7 @@ class _CartPageState extends State<CartPage> {
 
   double _total = 0.0;
   double _totalWeight = 0.0;
+  double distance = 0.0;
   double _shippingPrice = 0.0;
   HashMap<Product, int> _productNumber = new HashMap<Product, int>();
 
@@ -163,35 +164,7 @@ class _CartPageState extends State<CartPage> {
                 const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24.0),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      "Total :",
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      _total.toString() + " \$",
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Text("+ shipping fee"),
-                    ),
-                  ],
-                ),
+                _buildTotalText("+ shipping fee"),
                 Container(
                   height: 20,
                 ),
@@ -204,11 +177,44 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
+  Widget _buildTotalText(String shipping_text) {
+    return Column(children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text(
+            "Total :",
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            _total.toString() + " \$",
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Container(),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Text(shipping_text),
+          ),
+        ],
+      ),
+    ]);
+  }
+
   Widget _buildCheckoutButton() {
     return ElevatedButton(
       onPressed: () async {
-        _shippingPrice =
-            await httpService.getShipping(100, _totalWeight.ceil());
+        
         print(_shippingPrice);
       },
       style: ButtonStyle(
@@ -303,31 +309,73 @@ class _CartPageState extends State<CartPage> {
 
   Future<void> _showCheckoutDialog(Product p) {
     return Dialogs.materialDialog(
-      msg: 'Are you sure ? you can\'t undo this',
-      title: "Delete",
+      msg: 'Before going to checkout, we need to know where you are from use',
+      title: "Shipping distance",
       color: Colors.white,
       context: context,
       actions: [
-        IconsOutlineButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          text: 'Cancel',
-          iconData: Icons.cancel_outlined,
-          textStyle: TextStyle(color: Colors.grey),
-          iconColor: Colors.grey,
+        TextField(
+          controller: distanceController,
+          decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: 'Enter a distance',
+              labelText: 'Enter a distance'),
         ),
         IconsButton(
           onPressed: () {
             setState(() {
-              _total -= _productNumber[p] * double.parse(p.price);
-              _productNumber.remove(p);
+              _distance = double.parse(distanceController.text);
+              _shippingPrice =
+                await httpService.getShipping(_distance.ceil(), _totalWeight.ceil());
             });
             Navigator.pop(context);
+            _showPaymentDialog();
           },
-          text: "Delete",
-          iconData: Icons.delete,
-          color: Colors.red,
+          text: "Validate",
+          iconData: Icons.check_rounded,
+          color: Colors.green,
+          textStyle: TextStyle(color: Colors.white),
+          iconColor: Colors.white,
+        ),
+      ],
+    );
+  }
+
+  Future<void> _showPaymentDialog() {
+    return Dialogs.materialDialog(
+      msg: _buildTotalText(_shippingPrice),
+      title: "Shipping distance",
+      color: Colors.white,
+      context: context,
+      actions: [
+        IconsButton(
+          onPressed: () aysnc {
+            Navigator.pop(context);
+            _showCongratulationDialog();
+          },
+          text: "Validate",
+          iconData: Icons.check_rounded,
+          color: Colors.green,
+          textStyle: TextStyle(color: Colors.white),
+          iconColor: Colors.white,
+        ),
+      ],
+    );
+  }
+
+  Future<void> _showCongratulationDialog() {
+    return Dialogs.materialDialog(
+      color: Colors.white,
+      msg: 'Thank you very much for your purchase !',
+      title: 'Thank you',
+      animation: 'assets/payment_animation.json',
+      context: context,
+      actions: [
+        IconsButton(
+          onPressed: () {},
+          text: 'Exit',
+          iconData: Icons.done,
+          color: Colors.blue,
           textStyle: TextStyle(color: Colors.white),
           iconColor: Colors.white,
         ),
