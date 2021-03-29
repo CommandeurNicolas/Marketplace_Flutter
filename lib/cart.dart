@@ -31,7 +31,6 @@ class _CartPageState extends State<CartPage> {
 
   double _total = 0.0;
   double _totalWeight = 0.0;
-  double _distance = 0.0;
   double _shippingPrice = 0.0;
   HashMap<Product, int> _productNumber = new HashMap<Product, int>();
 
@@ -385,16 +384,16 @@ class _CartPageState extends State<CartPage> {
               hintText: 'in km',
               labelText: 'Distance',
             ),
+            keyboardType: TextInputType.number,
           ),
         ),
       ],
     );
     Function f = () async {
-      double distance = double.parse(distanceController.text);
+      double distance = double.parse(distanceController.value.text);
       double shippingPrice =
-          await httpService.getShipping(_distance.ceil(), _totalWeight.ceil());
+          await httpService.getShipping(distance.ceil(), _totalWeight.ceil());
       setState(() {
-        _distance = distance;
         _shippingPrice = shippingPrice;
       });
       Navigator.pop(context);
