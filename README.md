@@ -7,8 +7,8 @@
 
 ## Installation
 
-  You can get the apk [here](https://github.com/CommandeurNicolas/Marketplace_Flutter/raw/main/Marketplace.apk)
+  You can get the apk [here](https://github.com/CommandeurNicolas/Marketplace_Flutter/raw/main/Marketplace.apk)<br><br>
   
-  If you don't know how to install an apk on a smartphone you can read these articles : 
-  (French)  * https://www.frandroid.com/comment-faire/tutoriaux/184151_comment-installer-un-fichier-apk-sur-son-terminal-android
-  (English) * https://www.lifewire.com/install-apk-on-android-4177185
+  If you don't know how to install an apk on a smartphone you can read these articles : <br>
+    (French)  * https://www.frandroid.com/comment-faire/tutoriaux/184151_comment-installer-un-fichier-apk-sur-son-terminal-android<br>
+    (English) * https://www.lifewire.com/install-apk-on-android-4177185<br>
