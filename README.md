@@ -1,16 +1,15 @@
 # Marketplace_Flutter
 
-A new Flutter project.
+  Voici le rendu secondaire d'INFO802.
+  Ceci est le client SOAP et GraphQL fait avec Flutter pour un smartphone Android.
+  Aucuns test n'ont été fait sous IOS ou Web.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## Installation
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+  You can get the apk on this
+  [a APK](Marketplace.apk)
+  
+  If you don't know how to install an apk on a smartphone you can read these articles : 
+  (French)  * https://www.frandroid.com/comment-faire/tutoriaux/184151_comment-installer-un-fichier-apk-sur-son-terminal-android
+  (English) * https://www.lifewire.com/install-apk-on-android-4177185
