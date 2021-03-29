@@ -24,16 +24,20 @@ class _CartPageState extends State<CartPage> {
   final HttpService httpService = new HttpService();
 
   double _total = 0.0;
+  double _totalWeight = 0.0;
+  double _shippingPrice = 0.0;
   HashMap<Product, int> _productNumber = new HashMap<Product, int>();
 
   @override
   void initState() {
     for (Product item in widget.products) {
       _total += double.parse(item.price);
+      _totalWeight += double.parse(item.weight);
       _productNumber.containsKey(item)
           ? _productNumber[item]++
           : _productNumber[item] = 1;
     }
+    print(_totalWeight.ceil());
     super.initState();
   }
 
@@ -117,7 +121,7 @@ class _CartPageState extends State<CartPage> {
                               Container(
                                 // width: 40.0,
                                 child: ElevatedButton(
-                                  onPressed: () => _showDialog(
+                                  onPressed: () => _showDeleteDialog(
                                     _productNumber.keys.elementAt(index),
                                   ),
                                   style: ElevatedButton.styleFrom(
@@ -200,45 +204,12 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
-  Future<void> _showDialog(Product p) {
-    return Dialogs.materialDialog(
-      msg: 'Are you sure ? you can\'t undo this',
-      title: "Delete",
-      color: Colors.white,
-      context: context,
-      actions: [
-        IconsOutlineButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          text: 'Cancel',
-          iconData: Icons.cancel_outlined,
-          textStyle: TextStyle(color: Colors.grey),
-          iconColor: Colors.grey,
-        ),
-        IconsButton(
-          onPressed: () {
-            setState(() {
-              _total -= _productNumber[p] * double.parse(p.price);
-              _productNumber.remove(p);
-            });
-            Navigator.pop(context);
-          },
-          text: "Delete",
-          iconData: Icons.delete,
-          color: Colors.red,
-          textStyle: TextStyle(color: Colors.white),
-          iconColor: Colors.white,
-        ),
-      ],
-    );
-  }
-
   Widget _buildCheckoutButton() {
     return ElevatedButton(
       onPressed: () async {
-        double shippingPrice = await httpService.getShipping(100, 10);
-        print(shippingPrice);
+        _shippingPrice =
+            await httpService.getShipping(100, _totalWeight.ceil());
+        print(_shippingPrice);
       },
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all<Color>(primary),
@@ -293,6 +264,74 @@ class _CartPageState extends State<CartPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Future<void> _showDeleteDialog(Product p) {
+    return Dialogs.materialDialog(
+      msg: 'Are you sure ? you can\'t undo this',
+      title: "Delete",
+      color: Colors.white,
+      context: context,
+      actions: [
+        IconsOutlineButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          text: 'Cancel',
+          iconData: Icons.cancel_outlined,
+          textStyle: TextStyle(color: Colors.grey),
+          iconColor: Colors.grey,
+        ),
+        IconsButton(
+          onPressed: () {
+            setState(() {
+              _total -= _productNumber[p] * double.parse(p.price);
+              _productNumber.remove(p);
+            });
+            Navigator.pop(context);
+          },
+          text: "Delete",
+          iconData: Icons.delete,
+          color: Colors.red,
+          textStyle: TextStyle(color: Colors.white),
+          iconColor: Colors.white,
+        ),
+      ],
+    );
+  }
+
+  Future<void> _showCheckoutDialog(Product p) {
+    return Dialogs.materialDialog(
+      msg: 'Are you sure ? you can\'t undo this',
+      title: "Delete",
+      color: Colors.white,
+      context: context,
+      actions: [
+        IconsOutlineButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          text: 'Cancel',
+          iconData: Icons.cancel_outlined,
+          textStyle: TextStyle(color: Colors.grey),
+          iconColor: Colors.grey,
+        ),
+        IconsButton(
+          onPressed: () {
+            setState(() {
+              _total -= _productNumber[p] * double.parse(p.price);
+              _productNumber.remove(p);
+            });
+            Navigator.pop(context);
+          },
+          text: "Delete",
+          iconData: Icons.delete,
+          color: Colors.red,
+          textStyle: TextStyle(color: Colors.white),
+          iconColor: Colors.white,
+        ),
+      ],
     );
   }
 }
