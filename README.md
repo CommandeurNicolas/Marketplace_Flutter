@@ -1,8 +1,8 @@
 # Marketplace_Flutter
 
-  Voici le rendu secondaire d'INFO802.
-  Ceci est le client SOAP et GraphQL fait avec Flutter pour un smartphone Android.
-  Aucuns test n'ont été fait sous IOS ou Web.
+  Voici le rendu secondaire d'INFO802. <br>
+  Ceci est le client SOAP et GraphQL fait avec Flutter pour un smartphone Android.<br>
+  Aucuns test n'ont été fait sous IOS ou Web.<br>
 
 
 ## Installation
